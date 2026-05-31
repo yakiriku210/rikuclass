@@ -20,6 +20,21 @@
     .header-lang { display:flex; gap:12px; font-size:13px; }
     .header-lang a { text-decoration:none; color:#666; border:1px solid #ccc; padding:4px 10px; border-radius:3px; transition:all 0.2s; }
     .header-lang a:hover, .header-lang a.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:24px; height:2px; background:#333; transition:all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    @media(max-width:768px){
+      header { padding:14px 20px; }
+      .hamburger { display:flex; }
+      .header-lang { display:none; }
+      nav { position:fixed; top:57px; left:0; right:0; background:#fff; border-bottom:1px solid #e5e5e5; transform:translateY(-110%); transition:transform 0.3s ease; z-index:99; }
+      nav.open { transform:translateY(0); }
+      nav ul { flex-direction:column; gap:0; padding:8px 0; }
+      nav a { display:block; padding:14px 24px; font-size:15px; border-bottom:1px solid #f0f0f0; }
+      .logo { font-size:16px; }
+    }
 
     .page-hero { background:linear-gradient(135deg,#1a3c6e,#2a5298,#3a7bd5,#1a5c8e); background-size:300% 300%; animation:heroBgShift 10s ease infinite; color:#fff; padding:64px 40px; }
     @keyframes heroBgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
@@ -70,7 +85,7 @@
 
 <header>
   <a href="index.html" class="logo">株式会社りくクラス<span>RIKU CLASS</span></a>
-  <nav>
+  <nav id="global-nav">
     <ul>
       <li><a href="business.html">事業案内</a></li>
       <li><a href="news.html" class="current">ニュース</a></li>
@@ -80,6 +95,7 @@
       <li><a href="about.html">企業情報</a></li>
     </ul>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
   <div class="header-lang">
     <a href="#" class="active">JP</a>
     <a href="#">EN</a>
@@ -197,5 +213,5 @@
     });
   });
 </script>
-</body>
+<script>const _b=document.getElementById("hamburger"),_n=document.getElementById("global-nav");_b.addEventListener("click",()=>{_b.classList.toggle("open");_n.classList.toggle("open");});_n.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{_b.classList.remove("open");_n.classList.remove("open");}));</script></body>
 </html>

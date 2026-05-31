@@ -581,7 +581,7 @@
       株式会社りくクラス
       <span>RIKU CLASS CO., LTD.</span>
     </a>
-    <nav>
+    <nav id="global-nav">
       <ul>
         <li><a href="business.html">事業案内</a></li>
         <li><a href="news.html">ニュース</a></li>
@@ -591,7 +591,8 @@
         <li><a href="about.html">企業情報</a></li>
       </ul>
     </nav>
-    <div class="header-lang">
+    <button class="hamburger" id="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <div class="header-lang">
       <a href="#" class="active">JP</a>
       <a href="#">EN</a>
     </div>
@@ -758,5 +759,5 @@
       '.business-card, .news-item, .link-panel, .section-title'
     ).forEach(el => observer.observe(el));
   </script>
-</body>
+<script>const _b=document.getElementById("hamburger"),_n=document.getElementById("global-nav");_b.addEventListener("click",()=>{_b.classList.toggle("open");_n.classList.toggle("open");});_n.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{_b.classList.remove("open");_n.classList.remove("open");}));</script></body>
 </html>
