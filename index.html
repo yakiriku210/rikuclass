@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式会社りくクラス</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      color: #333;
+      background: #fff;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a3c6e;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-size: 12px;
+      display: block;
+      color: #666;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #1a3c6e;
+    }
+
+    .header-lang {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .header-lang a {
+      text-decoration: none;
+      color: #666;
+      border: 1px solid #ccc;
+      padding: 4px 10px;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .header-lang a:hover, .header-lang a.active {
+      background: #1a3c6e;
+      color: #fff;
+      border-color: #1a3c6e;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #1a3c6e 0%, #2a5298 60%, #3a7bd5 100%);
+      color: #fff;
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: bold;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background: #fff;
+      color: #1a3c6e;
+      padding: 14px 40px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .hero-btn:hover {
+      background: #f0f4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    /* ===== SECTION COMMON ===== */
+    section {
+      padding: 80px 40px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 28px;
+      color: #1a3c6e;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .section-title p {
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: #1a3c6e;
+      margin: 16px auto 0;
+    }
+
+    /* ===== BUSINESS ===== */
+    .business {
+      background: #f8f9fb;
+    }
+
+    .business-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .business-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 40px 28px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .business-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .business-icon {
+      width: 64px;
+      height: 64px;
+      background: #e8eef8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+
+    .business-card h3 {
+      font-size: 18px;
+      color: #1a3c6e;
+      margin-bottom: 12px;
+    }
+
+    .business-card p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    /* ===== NEWS ===== */
+    .news-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .news-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .news-item:first-child {
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .news-date {
+      font-size: 13px;
+      color: #999;
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 90px;
+    }
+
+    .news-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+      font-weight: bold;
+    }
+
+    .tag-press { background: #e8f0fe; color: #1a3c6e; }
+    .tag-report { background: #e8f8ee; color: #1a7a3c; }
+    .tag-info { background: #fff3e0; color: #e65100; }
+
+    .news-title {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+      text-decoration: none;
+    }
+
+    .news-title:hover {
+      color: #1a3c6e;
+      text-decoration: underline;
+    }
+
+    .news-more {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .btn-outline {
+      display: inline-block;
+      border: 2px solid #1a3c6e;
+      color: #1a3c6e;
+      padding: 12px 36px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: #1a3c6e;
+      color: #fff;
+    }
+
+    /* ===== LINKS BANNER ===== */
+    .links-banner {
+      background: #1a3c6e;
+      padding: 60px 40px;
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .link-panel {
+      background: rgba(255,255,255,0.08);
+      padding: 40px 28px;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      transition: background 0.2s;
+    }
+
+    .link-panel:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    .link-panel .icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .link-panel h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .link-panel p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111827;
+      color: #aaa;
+      padding: 60px 40px 30px;
+    }
+
+    .footer-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid #333;
+    }
+
+    .footer-logo {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .footer-logo span {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      font-weight: normal;
+      margin-top: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 48px;
+    }
+
+    .footer-nav-group h4 {
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-nav-group ul {
+      list-style: none;
+    }
+
+    .footer-nav-group li {
+      margin-bottom: 10px;
+    }
+
+    .footer-nav-group a {
+      text-decoration: none;
+      color: #888;
+      font-size: 12px;
+      transition: color 0.2s;
+    }
+
+    .footer-nav-group a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* ===== ANIMATIONS ===== */
+
+    /* ヘッダー — ページ読み込み時にフェードイン */
+    @keyframes headerSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    header {
+      animation: headerSlideDown 0.5s ease both;
+    }
+
+    /* ヒーロー — テキストが下からふわっと */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero h1 {
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    .hero p {
+      animation: fadeUp 0.8s ease 0.45s both;
+    }
+    .hero-btn {
+      animation: fadeUp 0.8s ease 0.65s both;
+    }
+
+    /* ヒーロー背景 — ゆっくりグラデーションが動く */
+    @keyframes heroBgShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .hero {
+      background: linear-gradient(135deg, #1a3c6e, #2a5298, #3a7bd5, #1a5c8e);
+      background-size: 300% 300%;
+      animation: heroBgShift 10s ease infinite;
+    }
+
+    /* セクションタイトル下線 — スクロール時に伸びる */
+    .section-title::after {
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.6s ease;
+    }
+    .section-title.visible::after {
+      transform: scaleX(1);
+    }
+
+    /* カード — スクロールで下からふわっと */
+    .business-card, .news-item, .link-panel {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .business-card.visible, .news-item.visible, .link-panel.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* カードの遅延（順番に出る） */
+    .business-card:nth-child(1) { transition-delay: 0s; }
+    .business-card:nth-child(2) { transition-delay: 0.15s; }
+    .business-card:nth-child(3) { transition-delay: 0.3s; }
+
+    .news-item:nth-child(1) { transition-delay: 0s; }
+    .news-item:nth-child(2) { transition-delay: 0.08s; }
+    .news-item:nth-child(3) { transition-delay: 0.16s; }
+    .news-item:nth-child(4) { transition-delay: 0.24s; }
+    .news-item:nth-child(5) { transition-delay: 0.32s; }
+
+    .link-panel:nth-child(1) { transition-delay: 0s; }
+    .link-panel:nth-child(2) { transition-delay: 0.15s; }
+    .link-panel:nth-child(3) { transition-delay: 0.3s; }
+
+    /* アイコン — ホバーでぽんっと弾む */
+    .business-icon {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .business-card:hover .business-icon {
+      transform: scale(1.2) rotate(-5deg);
+    }
+
+    /* リンクパネル アイコン — ホバーで上に浮く */
+    .link-panel .icon {
+      transition: transform 0.3s ease;
+    }
+    .link-panel:hover .icon {
+      transform: translateY(-6px);
+    }
+
+    /* ナビリンク — ホバーで下線がスライドイン */
+    nav a {
+      position: relative;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #1a3c6e;
+      transition: width 0.25s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 16px 20px;
+      }
+
+      nav ul {
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding: 60px 20px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+
+      .business-grid,
+      .links-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .footer-nav {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="#" class="logo">
+      株式会社りくクラス
+      <span>RIKU CLASS CO., LTD.</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="business.html">事業案内</a></li>
+        <li><a href="news.html">ニュース</a></li>
+        <li><a href="ir.html">IR</a></li>
+        <li><a href="csr.html">CSR</a></li>
+        <li><a href="recruit.html">採用情報</a></li>
+        <li><a href="about.html">企業情報</a></li>
+      </ul>
+    </nav>
+    <div class="header-lang">
+      <a href="#" class="active">JP</a>
+      <a href="#">EN</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-content">
+      <h1>テクノロジーの力で、<br>ビジネスの未来を切り開く。</h1>
+      <p>株式会社りくクラスは、人生のエンディングに関わる情報プラットフォームを通じて、<br>大切な人生の節目に寄り添うサービスを提供しています。</p>
+      <a href="#business" class="hero-btn">事業内容を見る</a>
+    </div>
+  </div>
+
+  <!-- BUSINESS -->
+  <section class="business" id="business">
+    <div class="section-title">
+      <h2>事業案内</h2>
+      <p>Our Business</p>
+    </div>
+    <div class="business-grid">
+      <div class="business-card">
+        <div class="business-icon">🏛️</div>
+        <h3>DXコンサルティング</h3>
+        <p>デジタルトランスフォーメーション戦略の立案から実行支援まで、企業のDXを総合的にサポートします。</p>
+      </div>
+      <div class="business-card">
+        <div class="business-icon">📊</div>
+        <h3>ITシステム開発</h3>
+        <p>お客様のビジネス要件に合わせたカスタムシステムの設計・開発・運用保守を一貫して提供します。</p>
+      </div>
+      <div class="business-card">
+        <div class="business-icon">💼</div>
+        <h3>業務プロセス改善</h3>
+        <p>業務フローの可視化・標準化・自動化により、コスト削減と生産性向上を実現するソリューションを提供します。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="section-title">
+      <h2>ニュース</h2>
+      <p>News &amp; Topics</p>
+    </div>
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-date">2026.05.20</span>
+        <span class="news-tag tag-press">プレスリリース</span>
+        <a href="#" class="news-title">2026年3月期 通期決算説明資料を掲載しました</a>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2026.04.15</span>
+        <span class="news-tag tag-report">調査レポート</span>
+        <a href="#" class="news-title">「2026年 企業DX推進に関する実態調査」を発表しました</a>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2026.03.30</span>
+        <span class="news-tag tag-info">お知らせ</span>
+        <a href="#" class="news-title">新サービス「AI業務自動化パッケージ」の提供開始について</a>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2026.02.14</span>
+        <span class="news-tag tag-press">プレスリリース</span>
+        <a href="#" class="news-title">東証グロース市場への上場申請に関するお知らせ</a>
+      </div>
+      <div class="news-item">
+        <span class="news-date">2026.01.10</span>
+        <span class="news-tag tag-info">お知らせ</span>
+        <a href="#" class="news-title">夏季休業のご案内（2026年8月12日〜8月16日）</a>
+      </div>
+    </div>
+    <div class="news-more">
+      <a href="#" class="btn-outline">ニュース一覧へ</a>
+    </div>
+  </section>
+
+  <!-- LINKS BANNER -->
+  <div class="links-banner">
+    <div class="links-grid">
+      <a href="#ir" class="link-panel">
+        <span class="icon">📈</span>
+        <h3>IR・投資家情報</h3>
+        <p>Investor Relations</p>
+      </a>
+      <a href="#csr" class="link-panel">
+        <span class="icon">🌱</span>
+        <h3>CSR・サステナビリティ</h3>
+        <p>CSR Activities</p>
+      </a>
+      <a href="#recruit" class="link-panel">
+        <span class="icon">👥</span>
+        <h3>採用情報</h3>
+        <p>Recruit</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-logo">
+          株式会社りくクラス
+          <span>RIKU CLASS CO., LTD.</span>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-nav-group">
+            <h4>企業情報</h4>
+            <ul>
+              <li><a href="#">会社概要</a></li>
+              <li><a href="#">役員体制</a></li>
+              <li><a href="#">沿革</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4>事業案内</h4>
+            <ul>
+              <li><a href="#">サービス一覧</a></li>
+              <li><a href="#">強み</a></li>
+              <li><a href="#">事業計画</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4>ニュース</h4>
+            <ul>
+              <li><a href="#">お知らせ</a></li>
+              <li><a href="#">プレスリリース</a></li>
+              <li><a href="#">調査レポート</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4>その他</h4>
+            <ul>
+              <li><a href="#">IR情報</a></li>
+              <li><a href="#">CSR</a></li>
+              <li><a href="#">採用情報</a></li>
+              <li><a href="#">お問い合わせ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Riku Class Co., Ltd. All Rights Reserved.</span>
+        <span>
+          <a href="#" style="color:#555; text-decoration:none; margin-right:16px;">プライバシーポリシー</a>
+          <a href="#" style="color:#555; text-decoration:none;">サイトマップ</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // スクロールで要素が見えたら .visible を付与
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll(
+      '.business-card, .news-item, .link-panel, .section-title'
+    ).forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

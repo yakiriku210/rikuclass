@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事業案内 | 株式会社りくクラス</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: #333; background: #fff; }
+
+    /* HEADER */
+    header { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: #fff; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; z-index: 100; animation: headerSlideDown 0.5s ease both; }
+    @keyframes headerSlideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    .logo { font-size: 22px; font-weight: bold; color: #1a3c6e; letter-spacing: 0.05em; text-decoration: none; }
+    .logo span { font-size: 12px; display: block; color: #666; font-weight: normal; letter-spacing: 0.1em; }
+    nav ul { display: flex; list-style: none; gap: 32px; }
+    nav a { text-decoration: none; color: #333; font-size: 14px; letter-spacing: 0.05em; transition: color 0.2s; position: relative; }
+    nav a::after { content:""; position:absolute; bottom:-3px; left:0; width:0; height:2px; background:#1a3c6e; transition:width 0.25s ease; }
+    nav a:hover::after, nav a.current::after { width:100%; }
+    nav a:hover, nav a.current { color:#1a3c6e; }
+    .header-lang { display:flex; gap:12px; font-size:13px; }
+    .header-lang a { text-decoration:none; color:#666; border:1px solid #ccc; padding:4px 10px; border-radius:3px; transition:all 0.2s; }
+    .header-lang a:hover, .header-lang a.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+
+    /* PAGE HERO */
+    .page-hero { background: linear-gradient(135deg,#1a3c6e,#2a5298,#3a7bd5,#1a5c8e); background-size:300% 300%; animation:heroBgShift 10s ease infinite; color:#fff; padding:64px 40px; }
+    @keyframes heroBgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .page-hero-inner { max-width:1000px; margin:0 auto; animation:fadeUp 0.7s ease 0.1s both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .breadcrumb { font-size:12px; color:rgba(255,255,255,0.65); margin-bottom:16px; letter-spacing:0.05em; }
+    .breadcrumb a { color:rgba(255,255,255,0.65); text-decoration:none; }
+    .breadcrumb a:hover { color:#fff; }
+    .breadcrumb span { margin:0 8px; }
+    .page-hero h1 { font-size:32px; font-weight:bold; letter-spacing:0.1em; margin-bottom:8px; }
+    .page-hero p { font-size:13px; color:rgba(255,255,255,0.6); letter-spacing:0.15em; text-transform:uppercase; }
+
+    /* CONTENT */
+    .content { max-width:1000px; margin:0 auto; padding:64px 40px; }
+    .content-section { margin-bottom:80px; opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .content-section.visible { opacity:1; transform:translateY(0); }
+    .content-section h2 { font-size:22px; color:#1a3c6e; padding-bottom:12px; border-bottom:2px solid #1a3c6e; margin-bottom:32px; letter-spacing:0.08em; }
+
+    /* 事業カード */
+    .biz-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:24px; }
+    @media(max-width:768px){ .biz-grid{grid-template-columns:1fr;} }
+    .biz-card { border:1px solid #e5e5e5; border-radius:8px; overflow:hidden; transition:box-shadow 0.25s,transform 0.25s; }
+    .biz-card:hover { box-shadow:0 8px 32px rgba(26,60,110,0.15); transform:translateY(-4px); }
+    .biz-card-img { height:180px; display:flex; align-items:center; justify-content:center; font-size:64px; }
+    .biz-card-body { padding:24px; }
+    .biz-card-body h3 { font-size:18px; color:#1a3c6e; margin-bottom:8px; letter-spacing:0.05em; }
+    .biz-card-body p { font-size:14px; color:#555; line-height:1.8; }
+    .biz-tag { display:inline-block; font-size:11px; background:#e8effa; color:#1a3c6e; padding:2px 8px; border-radius:3px; margin-bottom:10px; letter-spacing:0.05em; }
+
+    /* 詳細セクション */
+    .biz-detail { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; margin-bottom:60px; }
+    .biz-detail:nth-child(even) { direction:rtl; }
+    .biz-detail > * { direction:ltr; }
+    @media(max-width:768px){ .biz-detail{grid-template-columns:1fr;} .biz-detail:nth-child(even){direction:ltr;} }
+    .biz-detail-text h3 { font-size:20px; color:#1a3c6e; margin-bottom:16px; padding-left:12px; border-left:4px solid #1a3c6e; }
+    .biz-detail-text p { font-size:14px; color:#555; line-height:2; margin-bottom:12px; }
+    .biz-detail-text ul { padding-left:20px; }
+    .biz-detail-text li { font-size:14px; color:#555; line-height:2; }
+    .biz-detail-img { background:linear-gradient(135deg,#e8effa,#c5d8f5); border-radius:8px; height:260px; display:flex; align-items:center; justify-content:center; font-size:72px; }
+
+    /* FOOTER */
+    footer { background:#1a3c6e; color:rgba(255,255,255,0.7); padding:40px; text-align:center; font-size:13px; }
+    footer .f-logo { font-size:20px; font-weight:bold; color:#fff; margin-bottom:16px; letter-spacing:0.1em; }
+    footer .f-links { display:flex; justify-content:center; gap:24px; margin-bottom:20px; flex-wrap:wrap; }
+    footer .f-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:12px; }
+    footer .f-links a:hover { color:#fff; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">株式会社りくクラス<span>RIKU CLASS</span></a>
+  <nav>
+    <ul>
+      <li><a href="business.html" class="current">事業案内</a></li>
+      <li><a href="news.html">ニュース</a></li>
+      <li><a href="ir.html">IR</a></li>
+      <li><a href="csr.html">CSR</a></li>
+      <li><a href="recruit.html">採用情報</a></li>
+      <li><a href="about.html">企業情報</a></li>
+    </ul>
+  </nav>
+  <div class="header-lang">
+    <a href="#" class="active">JP</a>
+    <a href="#">EN</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a><span>›</span>事業案内
+    </div>
+    <h1>事業案内</h1>
+    <p>Business</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 事業概要 -->
+  <div class="content-section">
+    <h2>事業概要</h2>
+    <div class="biz-grid">
+      <div class="biz-card">
+        <div class="biz-card-img" style="background:linear-gradient(135deg,#e8effa,#c5d8f5);">🏛️</div>
+        <div class="biz-card-body">
+          <span class="biz-tag">MAIN BUSINESS</span>
+          <h3>DXコンサルティング事業</h3>
+          <p>DX戦略立案・推進支援、クラウド移行、データ活用基盤の構築まで、企業のデジタル変革を包括的に支援します。</p>
+        </div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-card-img" style="background:linear-gradient(135deg,#fef3e8,#fddbb5);">📋</div>
+        <div class="biz-card-body">
+          <span class="biz-tag">PLANNING</span>
+          <h3>システムインテグレーション事業</h3>
+          <p>お客様のビジネス課題に最適なITシステムを設計・開発・導入し、運用保守まで一貫したサービスを提供します。</p>
+        </div>
+      </div>
+      <div class="biz-card">
+        <div class="biz-card-img" style="background:linear-gradient(135deg,#e8faf0,#b5f0cc);">📚</div>
+        <div class="biz-card-body">
+          <span class="biz-tag">PUBLISHING</span>
+          <h3>業務改善・RPA導入支援事業</h3>
+          <p>業務プロセスの分析・可視化からRPA・AIによる自動化まで、現場に寄り添った改善支援を行います。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 各事業詳細 -->
+  <div class="content-section">
+    <h2>事業詳細</h2>
+
+    <div class="biz-detail">
+      <div class="biz-detail-text">
+        <h3>DXコンサルティング事業</h3>
+        <p>製造業・流通業・金融業など幅広い業種においてDX戦略の策定から実行まで伴走支援します。クラウド移行・データ分析基盤構築・AI活用など、最新テクノロジーを活用した変革を推進します。</p>
+        <ul>
+          <li>DX戦略・ロードマップ策定</li>
+          <li>クラウド移行・インフラ最適化</li>
+          <li>データ分析基盤の構築</li>
+          <li>AI・機械学習の活用支援</li>
+        </ul>
+      </div>
+      <div class="biz-detail-img">🌐</div>
+    </div>
+
+    <div class="biz-detail">
+      <div class="biz-detail-text">
+        <h3>システムインテグレーション事業事業</h3>
+        <p>基幹システムの刷新・ERP導入・Webアプリケーション開発まで、お客様のビジネス規模・目的に合わせた最適なシステムを一貫して構築します。要件定義から保守まで、ワンストップで対応します。</p>
+        <ul>
+          <li>要件定義・システム設計</li>
+          <li>開発・テスト・リリース</li>
+          <li>クラウドインフラ設計・構築</li>
+          <li>運用・保守・継続改善</li>
+        </ul>
+      </div>
+      <div class="biz-detail-img">🤝</div>
+    </div>
+
+    <div class="biz-detail">
+      <div class="biz-detail-text">
+        <h3>業務改善・RPA導入支援事業</h3>
+        <p>現場の業務を深く理解した専門コンサルタントが、RPAやAIを活用した業務自動化・効率化を推進。導入後の定着支援まで責任を持って対応します。</p>
+        <ul>
+          <li>業務プロセス分析・可視化</li>
+          <li>RPA・AI自動化ツール導入</li>
+          <li>社員向けDXリテラシー研修</li>
+          <li>導入後モニタリング・改善支援</li>
+        </ul>
+      </div>
+      <div class="biz-detail-img">📖</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="f-logo">株式会社りくクラス</div>
+  <div class="f-links">
+    <a href="index.html">トップ</a>
+    <a href="business.html">事業案内</a>
+    <a href="news.html">ニュース</a>
+    <a href="ir.html">IR</a>
+    <a href="csr.html">CSR</a>
+    <a href="recruit.html">採用情報</a>
+    <a href="about.html">企業情報</a>
+  </div>
+  <p>© 2024 Riku Class Co., Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.content-section').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ニュース | 株式会社りくクラス</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: #333; background: #fff; }
+
+    header { display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:#fff; border-bottom:1px solid #e5e5e5; position:sticky; top:0; z-index:100; animation:headerSlideDown 0.5s ease both; }
+    @keyframes headerSlideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    .logo { font-size:22px; font-weight:bold; color:#1a3c6e; letter-spacing:0.05em; text-decoration:none; }
+    .logo span { font-size:12px; display:block; color:#666; font-weight:normal; letter-spacing:0.1em; }
+    nav ul { display:flex; list-style:none; gap:32px; }
+    nav a { text-decoration:none; color:#333; font-size:14px; letter-spacing:0.05em; transition:color 0.2s; position:relative; }
+    nav a::after { content:""; position:absolute; bottom:-3px; left:0; width:0; height:2px; background:#1a3c6e; transition:width 0.25s ease; }
+    nav a:hover::after, nav a.current::after { width:100%; }
+    nav a:hover, nav a.current { color:#1a3c6e; }
+    .header-lang { display:flex; gap:12px; font-size:13px; }
+    .header-lang a { text-decoration:none; color:#666; border:1px solid #ccc; padding:4px 10px; border-radius:3px; transition:all 0.2s; }
+    .header-lang a:hover, .header-lang a.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+
+    .page-hero { background:linear-gradient(135deg,#1a3c6e,#2a5298,#3a7bd5,#1a5c8e); background-size:300% 300%; animation:heroBgShift 10s ease infinite; color:#fff; padding:64px 40px; }
+    @keyframes heroBgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .page-hero-inner { max-width:1000px; margin:0 auto; animation:fadeUp 0.7s ease 0.1s both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .breadcrumb { font-size:12px; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .breadcrumb a { color:rgba(255,255,255,0.65); text-decoration:none; }
+    .breadcrumb span { margin:0 8px; }
+    .page-hero h1 { font-size:32px; font-weight:bold; letter-spacing:0.1em; margin-bottom:8px; }
+    .page-hero p { font-size:13px; color:rgba(255,255,255,0.6); letter-spacing:0.15em; text-transform:uppercase; }
+
+    .content { max-width:1000px; margin:0 auto; padding:64px 40px; }
+    .content-section { margin-bottom:64px; opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .content-section.visible { opacity:1; transform:translateY(0); }
+    .content-section h2 { font-size:22px; color:#1a3c6e; padding-bottom:12px; border-bottom:2px solid #1a3c6e; margin-bottom:32px; letter-spacing:0.08em; }
+
+    /* カテゴリフィルター */
+    .news-filter { display:flex; gap:12px; margin-bottom:32px; flex-wrap:wrap; }
+    .filter-btn { padding:6px 20px; border:1px solid #1a3c6e; border-radius:20px; background:none; color:#1a3c6e; font-size:13px; cursor:pointer; transition:all 0.2s; }
+    .filter-btn:hover, .filter-btn.active { background:#1a3c6e; color:#fff; }
+
+    /* ニュースリスト */
+    .news-list { border-top:1px solid #e5e5e5; }
+    .news-item { display:grid; grid-template-columns:120px 120px 1fr; gap:20px; align-items:center; padding:20px 0; border-bottom:1px solid #e5e5e5; text-decoration:none; color:#333; transition:background 0.2s; }
+    .news-item:hover { background:#f5f8ff; }
+    .news-item:hover .news-title { color:#1a3c6e; }
+    .news-date { font-size:13px; color:#888; }
+    .news-cat { font-size:11px; padding:3px 10px; border-radius:3px; text-align:center; font-weight:bold; letter-spacing:0.05em; }
+    .cat-pr { background:#e8effa; color:#1a3c6e; }
+    .cat-ir { background:#fff3e0; color:#e65100; }
+    .cat-service { background:#e8f5e9; color:#2e7d32; }
+    .cat-media { background:#fce4ec; color:#c62828; }
+    .news-title { font-size:14px; line-height:1.6; }
+
+    /* ページネーション */
+    .pagination { display:flex; justify-content:center; gap:8px; margin-top:48px; }
+    .page-btn { width:36px; height:36px; display:flex; align-items:center; justify-content:center; border:1px solid #e5e5e5; border-radius:4px; text-decoration:none; color:#333; font-size:14px; transition:all 0.2s; }
+    .page-btn:hover, .page-btn.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+
+    footer { background:#1a3c6e; color:rgba(255,255,255,0.7); padding:40px; text-align:center; font-size:13px; }
+    footer .f-logo { font-size:20px; font-weight:bold; color:#fff; margin-bottom:16px; }
+    footer .f-links { display:flex; justify-content:center; gap:24px; margin-bottom:20px; flex-wrap:wrap; }
+    footer .f-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:12px; }
+    footer .f-links a:hover { color:#fff; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">株式会社りくクラス<span>RIKU CLASS</span></a>
+  <nav>
+    <ul>
+      <li><a href="business.html">事業案内</a></li>
+      <li><a href="news.html" class="current">ニュース</a></li>
+      <li><a href="ir.html">IR</a></li>
+      <li><a href="csr.html">CSR</a></li>
+      <li><a href="recruit.html">採用情報</a></li>
+      <li><a href="about.html">企業情報</a></li>
+    </ul>
+  </nav>
+  <div class="header-lang">
+    <a href="#" class="active">JP</a>
+    <a href="#">EN</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a><span>›</span>ニュース
+    </div>
+    <h1>ニュース</h1>
+    <p>News</p>
+  </div>
+</div>
+
+<div class="content">
+  <div class="content-section">
+    <h2>最新ニュース</h2>
+
+    <div class="news-filter">
+      <button class="filter-btn active">すべて</button>
+      <button class="filter-btn">プレスリリース</button>
+      <button class="filter-btn">IR情報</button>
+      <button class="filter-btn">サービス情報</button>
+      <button class="filter-btn">メディア掲載</button>
+    </div>
+
+    <div class="news-list">
+      <a class="news-item" href="#">
+        <span class="news-date">2024.11.15</span>
+        <span class="news-cat cat-pr">プレスリリース</span>
+        <span class="news-title">自社プロダクト「NexusFlow」ver3.0をリリース — AIによる業務自動化機能を追加</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.11.01</span>
+        <span class="news-cat cat-ir">IR情報</span>
+        <span class="news-title">2024年12月期 第3四半期決算説明会の開催について</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.10.20</span>
+        <span class="news-cat cat-service">サービス情報</span>
+        <span class="news-title">DX推進セミナーを全国15都市で開催 — 無料参加申込受付中</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.10.05</span>
+        <span class="news-cat cat-media">メディア掲載</span>
+        <span class="news-title">日本経済新聞にて当社のAI活用コンサルティング事業が紹介されました</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.09.18</span>
+        <span class="news-cat cat-pr">プレスリリース</span>
+        <span class="news-title">中小企業向けDXパッケージ「スタートDX」をリリース — 初期費用ゼロで導入可能</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.09.02</span>
+        <span class="news-cat cat-ir">IR情報</span>
+        <span class="news-title">2024年12月期 第2四半期 決算短信の公開について</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.08.22</span>
+        <span class="news-cat cat-service">サービス情報</span>
+        <span class="news-title">パートナー企業が全国200社を突破 — 全国のITパートナーとの連携を強化</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.08.10</span>
+        <span class="news-cat cat-pr">プレスリリース</span>
+        <span class="news-title">生成AI活用コンサルティングサービスの提供を開始しました</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.07.25</span>
+        <span class="news-cat cat-media">メディア掲載</span>
+        <span class="news-title">TBS「ビジネスZERO」にて当社のDX支援事例が特集されました</span>
+      </a>
+      <a class="news-item" href="#">
+        <span class="news-date">2024.07.10</span>
+        <span class="news-cat cat-ir">IR情報</span>
+        <span class="news-title">株主優待制度の変更に関するお知らせ</span>
+      </a>
+    </div>
+
+    <div class="pagination">
+      <a class="page-btn active" href="#">1</a>
+      <a class="page-btn" href="#">2</a>
+      <a class="page-btn" href="#">3</a>
+      <a class="page-btn" href="#">›</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">株式会社りくクラス</div>
+  <div class="f-links">
+    <a href="index.html">トップ</a>
+    <a href="business.html">事業案内</a>
+    <a href="news.html">ニュース</a>
+    <a href="ir.html">IR</a>
+    <a href="csr.html">CSR</a>
+    <a href="recruit.html">採用情報</a>
+    <a href="about.html">企業情報</a>
+  </div>
+  <p>© 2024 Riku Class Co., Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.content-section').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

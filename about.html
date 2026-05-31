@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業情報 | 株式会社りくクラス</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      color: #333;
+      background: #fff;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: headerSlideDown 0.5s ease both;
+    }
+
+    @keyframes headerSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a3c6e;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .logo span {
+      font-size: 12px;
+      display: block;
+      color: #666;
+      font-weight: normal;
+      letter-spacing: 0.1em;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+      position: relative;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: #1a3c6e;
+      transition: width 0.25s ease;
+    }
+    nav a:hover::after, nav a.current::after { width: 100%; }
+    nav a:hover, nav a.current { color: #1a3c6e; }
+
+    .header-lang {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+    }
+    .header-lang a {
+      text-decoration: none;
+      color: #666;
+      border: 1px solid #ccc;
+      padding: 4px 10px;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+    .header-lang a:hover, .header-lang a.active {
+      background: #1a3c6e;
+      color: #fff;
+      border-color: #1a3c6e;
+    }
+
+    /* ===== PAGE HERO ===== */
+    .page-hero {
+      background: linear-gradient(135deg, #1a3c6e, #2a5298, #3a7bd5, #1a5c8e);
+      background-size: 300% 300%;
+      animation: heroBgShift 10s ease infinite;
+      color: #fff;
+      padding: 64px 40px;
+    }
+    @keyframes heroBgShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .page-hero-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease 0.1s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .breadcrumb {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .breadcrumb a {
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { color: #fff; }
+    .breadcrumb span { margin: 0 8px; }
+    .page-hero h1 {
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .page-hero p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ===== SUB NAV ===== */
+    .sub-nav {
+      border-bottom: 2px solid #e5e5e5;
+      background: #fff;
+      position: sticky;
+      top: 57px;
+      z-index: 90;
+    }
+    .sub-nav ul {
+      display: flex;
+      list-style: none;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .sub-nav a {
+      display: block;
+      padding: 16px 24px;
+      text-decoration: none;
+      color: #666;
+      font-size: 14px;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .sub-nav a:hover, .sub-nav a.active {
+      color: #1a3c6e;
+      border-bottom-color: #1a3c6e;
+    }
+
+    /* ===== CONTENT ===== */
+    .content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 64px 40px;
+    }
+
+    /* セクション見出し */
+    .content-section {
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .content-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .content-section h2 {
+      font-size: 22px;
+      color: #1a3c6e;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #1a3c6e;
+      margin-bottom: 32px;
+      letter-spacing: 0.08em;
+    }
+
+    /* 会社概要テーブル */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table th, .info-table td {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid #e5e5e5;
+      line-height: 1.8;
+    }
+    .info-table th {
+      width: 200px;
+      color: #1a3c6e;
+      font-weight: bold;
+      background: #f8f9fb;
+      white-space: nowrap;
+    }
+
+    /* 役員カード */
+    .officers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .officer-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .officer-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+    }
+    .officer-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #e8eef8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 30px;
+    }
+    .officer-card .title {
+      font-size: 11px;
+      color: #1a3c6e;
+      background: #e8eef8;
+      padding: 3px 10px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .officer-card h3 {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .officer-card p {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* 沿革タイムライン */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: #e5e5e5;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 5px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #1a3c6e;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px #1a3c6e;
+    }
+    .timeline-year {
+      font-size: 13px;
+      font-weight: bold;
+      color: #1a3c6e;
+      margin-bottom: 4px;
+    }
+    .timeline-text {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111827;
+      color: #aaa;
+      padding: 60px 40px 30px;
+    }
+    .footer-inner { max-width: 1000px; margin: 0 auto; }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid #333;
+    }
+    .footer-logo { font-size: 18px; font-weight: bold; color: #fff; }
+    .footer-logo span {
+      display: block; font-size: 11px; color: #888;
+      font-weight: normal; margin-top: 6px; letter-spacing: 0.1em;
+    }
+    .footer-nav { display: flex; gap: 48px; }
+    .footer-nav-group h4 { font-size: 13px; color: #fff; margin-bottom: 16px; }
+    .footer-nav-group ul { list-style: none; }
+    .footer-nav-group li { margin-bottom: 10px; }
+    .footer-nav-group a {
+      text-decoration: none; color: #888; font-size: 12px; transition: color 0.2s;
+    }
+    .footer-nav-group a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; font-size: 12px; color: #555;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      header { flex-wrap: wrap; gap: 16px; padding: 16px 20px; }
+      nav ul { gap: 16px; flex-wrap: wrap; }
+      .page-hero { padding: 48px 20px; }
+      .sub-nav ul { padding: 0 10px; overflow-x: auto; }
+      .content { padding: 48px 20px; }
+      .officers-grid { grid-template-columns: 1fr 1fr; }
+      .info-table th { width: 120px; }
+      .footer-top { flex-direction: column; gap: 32px; }
+      .footer-nav { flex-direction: column; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="logo">
+      株式会社りくクラス
+      <span>RIKU CLASS CO., LTD.</span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="about.html" class="current">企業情報</a></li>
+        <li><a href="#">事業案内</a></li>
+        <li><a href="#">ニュース</a></li>
+        <li><a href="#">IR情報</a></li>
+        <li><a href="#">CSR</a></li>
+        <li><a href="#">採用情報</a></li>
+      </ul>
+    </nav>
+    <div class="header-lang">
+      <a href="#" class="active">JP</a>
+      <a href="#">EN</a>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">ホーム</a>
+        <span>›</span>
+        企業情報
+      </div>
+      <h1>企業情報</h1>
+      <p>Company Information</p>
+    </div>
+  </div>
+
+  <!-- SUB NAV -->
+  <div class="sub-nav">
+    <ul>
+      <li><a href="#overview" class="active">会社概要</a></li>
+      <li><a href="#officers">役員体制</a></li>
+      <li><a href="#history">沿革</a></li>
+    </ul>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- 会社概要 -->
+    <div class="content-section" id="overview">
+      <h2>会社概要</h2>
+      <table class="info-table">
+        <tr>
+          <th>会社名</th>
+          <td>株式会社りくクラス</td>
+        </tr>
+        <tr>
+          <th>設立</th>
+          <td>1992年（平成4年）</td>
+        </tr>
+        <tr>
+          <th>代表取締役社長</th>
+          <td>りくクラス</td>
+        </tr>
+        <tr>
+          <th>資本金</th>
+          <td>10億円（2026年3月末時点）</td>
+        </tr>
+        <tr>
+          <th>従業員数</th>
+          <td>350名（2026年3月末時点）</td>
+        </tr>
+        <tr>
+          <th>本社所在地</th>
+          <td>〒103-0014 東京都中央区日本橋蛎殻町1丁目</td>
+        </tr>
+        <tr>
+          <th>事業内容</th>
+          <td>情報加工業、インターネットメディア運営、BtoB向けマーケティング支援</td>
+        </tr>
+        <tr>
+          <th>上場市場</th>
+          <td>東京証券取引所 グロース市場</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 役員体制 -->
+    <div class="content-section" id="officers">
+      <h2>役員体制</h2>
+      <div class="officers-grid">
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">代表取締役社長</span>
+          <h3>りくクラス</h3>
+          <p>CEO</p>
+        </div>
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">取締役副社長</span>
+          <h3>副社長 花子</h3>
+          <p>COO</p>
+        </div>
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">取締役</span>
+          <h3>取締役 一郎</h3>
+          <p>CFO</p>
+        </div>
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">取締役</span>
+          <h3>取締役 次郎</h3>
+          <p>CTO</p>
+        </div>
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">社外取締役</span>
+          <h3>外部 三郎</h3>
+          <p>Independent Director</p>
+        </div>
+        <div class="officer-card">
+          <div class="officer-avatar">👤</div>
+          <span class="title">監査役</span>
+          <h3>監査 四郎</h3>
+          <p>Auditor</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 沿革 -->
+    <div class="content-section" id="history">
+      <h2>沿革</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1992年</div>
+          <div class="timeline-text">東京都中央区にて株式会社りくクラスを設立。葬祭業界向け専門誌の発行を開始。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2000年</div>
+          <div class="timeline-text">クラウド型業務改善プラットフォーム「NexusFlow」を開設。SaaS事業へ本格進出。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2007年</div>
+          <div class="timeline-text">「NexusRPA」「NexusAnalytics」など関連サービスを順次展開。DX支援領域への事業拡大。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2015年</div>
+          <div class="timeline-text">東京証券取引所マザーズ市場（現グロース市場）に株式上場。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2018年</div>
+          <div class="timeline-text">相続・遺言分野への事業拡大。「いい相続」サービス開始。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022年</div>
+          <div class="timeline-text">創業30周年。ユーザー数累計1,000万人を突破。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2024年</div>
+          <div class="timeline-text">「DX推進サポートプラス」を開始。AIを活用した新サービス展開を強化。</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-logo">
+          株式会社りくクラス
+          <span>RIKU CLASS CO., LTD.</span>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-nav-group">
+            <h4>企業情報</h4>
+            <ul>
+              <li><a href="#overview">会社概要</a></li>
+              <li><a href="#officers">役員体制</a></li>
+              <li><a href="#history">沿革</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4>事業案内</h4>
+            <ul>
+              <li><a href="#">サービス一覧</a></li>
+              <li><a href="#">強み</a></li>
+            </ul>
+          </div>
+          <div class="footer-nav-group">
+            <h4>その他</h4>
+            <ul>
+              <li><a href="#">IR情報</a></li>
+              <li><a href="#">CSR</a></li>
+              <li><a href="#">採用情報</a></li>
+              <li><a href="#">お問い合わせ</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Riku Class Co., Ltd. All Rights Reserved.</span>
+        <span>
+          <a href="#" style="color:#555; text-decoration:none; margin-right:16px;">プライバシーポリシー</a>
+          <a href="#" style="color:#555; text-decoration:none;">サイトマップ</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // スクロールアニメーション
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.content-section, .timeline-item').forEach(el => observer.observe(el));
+
+    // サブナビのアクティブ切替
+    const sections = document.querySelectorAll('.content-section');
+    const subLinks = document.querySelectorAll('.sub-nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+      });
+      subLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+
+</body>
+</html>

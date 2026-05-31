@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IR情報 | 株式会社りくクラス</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: #333; background: #fff; }
+
+    header { display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:#fff; border-bottom:1px solid #e5e5e5; position:sticky; top:0; z-index:100; animation:headerSlideDown 0.5s ease both; }
+    @keyframes headerSlideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    .logo { font-size:22px; font-weight:bold; color:#1a3c6e; letter-spacing:0.05em; text-decoration:none; }
+    .logo span { font-size:12px; display:block; color:#666; font-weight:normal; letter-spacing:0.1em; }
+    nav ul { display:flex; list-style:none; gap:32px; }
+    nav a { text-decoration:none; color:#333; font-size:14px; letter-spacing:0.05em; transition:color 0.2s; position:relative; }
+    nav a::after { content:""; position:absolute; bottom:-3px; left:0; width:0; height:2px; background:#1a3c6e; transition:width 0.25s ease; }
+    nav a:hover::after, nav a.current::after { width:100%; }
+    nav a:hover, nav a.current { color:#1a3c6e; }
+    .header-lang { display:flex; gap:12px; font-size:13px; }
+    .header-lang a { text-decoration:none; color:#666; border:1px solid #ccc; padding:4px 10px; border-radius:3px; transition:all 0.2s; }
+    .header-lang a:hover, .header-lang a.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+
+    .page-hero { background:linear-gradient(135deg,#1a3c6e,#2a5298,#3a7bd5,#1a5c8e); background-size:300% 300%; animation:heroBgShift 10s ease infinite; color:#fff; padding:64px 40px; }
+    @keyframes heroBgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .page-hero-inner { max-width:1000px; margin:0 auto; animation:fadeUp 0.7s ease 0.1s both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .breadcrumb { font-size:12px; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .breadcrumb a { color:rgba(255,255,255,0.65); text-decoration:none; }
+    .breadcrumb span { margin:0 8px; }
+    .page-hero h1 { font-size:32px; font-weight:bold; letter-spacing:0.1em; margin-bottom:8px; }
+    .page-hero p { font-size:13px; color:rgba(255,255,255,0.6); letter-spacing:0.15em; }
+
+    .content { max-width:1000px; margin:0 auto; padding:64px 40px; }
+    .content-section { margin-bottom:72px; opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .content-section.visible { opacity:1; transform:translateY(0); }
+    .content-section h2 { font-size:22px; color:#1a3c6e; padding-bottom:12px; border-bottom:2px solid #1a3c6e; margin-bottom:32px; letter-spacing:0.08em; }
+
+    /* 株式情報ボックス */
+    .stock-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:48px; }
+    @media(max-width:768px){ .stock-grid{grid-template-columns:repeat(2,1fr);} }
+    .stock-box { background:#f5f8ff; border:1px solid #d0dff5; border-radius:8px; padding:20px; text-align:center; }
+    .stock-box .label { font-size:11px; color:#888; letter-spacing:0.1em; margin-bottom:8px; }
+    .stock-box .value { font-size:22px; font-weight:bold; color:#1a3c6e; }
+    .stock-box .unit { font-size:12px; color:#888; margin-top:4px; }
+
+    /* 決算資料リスト */
+    .doc-list { border-top:1px solid #e5e5e5; }
+    .doc-item { display:grid; grid-template-columns:120px 80px 1fr 100px; gap:16px; align-items:center; padding:16px 0; border-bottom:1px solid #e5e5e5; }
+    @media(max-width:768px){ .doc-item{grid-template-columns:1fr 1fr; grid-template-rows:auto auto;} }
+    .doc-date { font-size:13px; color:#888; }
+    .doc-type { font-size:11px; background:#e8effa; color:#1a3c6e; padding:3px 8px; border-radius:3px; text-align:center; font-weight:bold; }
+    .doc-name { font-size:14px; color:#333; }
+    .doc-dl { display:flex; align-items:center; justify-content:flex-end; gap:6px; text-decoration:none; color:#1a3c6e; font-size:13px; border:1px solid #1a3c6e; padding:6px 14px; border-radius:4px; transition:all 0.2s; }
+    .doc-dl:hover { background:#1a3c6e; color:#fff; }
+
+    /* グラフ（擬似） */
+    .chart-wrap { background:#f9f9f9; border-radius:8px; padding:32px; text-align:center; color:#888; font-size:14px; border:1px dashed #ddd; height:200px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; }
+
+    footer { background:#1a3c6e; color:rgba(255,255,255,0.7); padding:40px; text-align:center; font-size:13px; }
+    footer .f-logo { font-size:20px; font-weight:bold; color:#fff; margin-bottom:16px; }
+    footer .f-links { display:flex; justify-content:center; gap:24px; margin-bottom:20px; flex-wrap:wrap; }
+    footer .f-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:12px; }
+    footer .f-links a:hover { color:#fff; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">株式会社りくクラス<span>RIKU CLASS</span></a>
+  <nav>
+    <ul>
+      <li><a href="business.html">事業案内</a></li>
+      <li><a href="news.html">ニュース</a></li>
+      <li><a href="ir.html" class="current">IR</a></li>
+      <li><a href="csr.html">CSR</a></li>
+      <li><a href="recruit.html">採用情報</a></li>
+      <li><a href="about.html">企業情報</a></li>
+    </ul>
+  </nav>
+  <div class="header-lang">
+    <a href="#" class="active">JP</a>
+    <a href="#">EN</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a><span>›</span>IR情報
+    </div>
+    <h1>IR情報</h1>
+    <p>Investor Relations</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 株式情報 -->
+  <div class="content-section">
+    <h2>株式情報</h2>
+    <div class="stock-grid">
+      <div class="stock-box">
+        <div class="label">証券コード</div>
+        <div class="value">4892</div>
+        <div class="unit">東証プライム</div>
+      </div>
+      <div class="stock-box">
+        <div class="label">発行済株式数</div>
+        <div class="value">8,560</div>
+        <div class="unit">千株</div>
+      </div>
+      <div class="stock-box">
+        <div class="label">決算期</div>
+        <div class="value">3月</div>
+        <div class="unit">年1回</div>
+      </div>
+      <div class="stock-box">
+        <div class="label">上場年月日</div>
+        <div class="value">2018</div>
+        <div class="unit">年12月</div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <span style="font-size:32px;">📈</span>
+      <span>株価チャートは証券会社サイトをご参照ください</span>
+    </div>
+  </div>
+
+  <!-- 決算資料 -->
+  <div class="content-section">
+    <h2>決算資料</h2>
+    <div class="doc-list">
+      <div class="doc-item">
+        <span class="doc-date">2024.11.01</span>
+        <span class="doc-type">決算短信</span>
+        <span class="doc-name">2024年3月期 第3四半期決算短信</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+      <div class="doc-item">
+        <span class="doc-date">2024.08.02</span>
+        <span class="doc-type">決算短信</span>
+        <span class="doc-name">2024年3月期 第2四半期決算短信</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+      <div class="doc-item">
+        <span class="doc-date">2024.05.10</span>
+        <span class="doc-type">決算短信</span>
+        <span class="doc-name">2024年3月期 第1四半期決算短信</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+      <div class="doc-item">
+        <span class="doc-date">2024.02.14</span>
+        <span class="doc-type">通期決算</span>
+        <span class="doc-name">2023年3月期 通期決算短信・説明会資料</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+      <div class="doc-item">
+        <span class="doc-date">2024.03.28</span>
+        <span class="doc-type">有価証券</span>
+        <span class="doc-name">2023年3月期 有価証券報告書</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 株主総会 -->
+  <div class="content-section">
+    <h2>株主総会・株主優待</h2>
+    <div class="doc-list">
+      <div class="doc-item">
+        <span class="doc-date">2024.03.28</span>
+        <span class="doc-type">株主総会</span>
+        <span class="doc-name">第7回 定時株主総会 招集通知・議決権行使書</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+      <div class="doc-item">
+        <span class="doc-date">2024.01.10</span>
+        <span class="doc-type">株主優待</span>
+        <span class="doc-name">株主優待制度のご案内（2024年3月期）</span>
+        <a class="doc-dl" href="#">📄 PDF</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="f-logo">株式会社りくクラス</div>
+  <div class="f-links">
+    <a href="index.html">トップ</a>
+    <a href="business.html">事業案内</a>
+    <a href="news.html">ニュース</a>
+    <a href="ir.html">IR</a>
+    <a href="csr.html">CSR</a>
+    <a href="recruit.html">採用情報</a>
+    <a href="about.html">企業情報</a>
+  </div>
+  <p>© 2024 Riku Class Co., Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.content-section').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSR | 株式会社りくクラス</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; color: #333; background: #fff; }
+
+    header { display:flex; align-items:center; justify-content:space-between; padding:16px 40px; background:#fff; border-bottom:1px solid #e5e5e5; position:sticky; top:0; z-index:100; animation:headerSlideDown 0.5s ease both; }
+    @keyframes headerSlideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    .logo { font-size:22px; font-weight:bold; color:#1a3c6e; letter-spacing:0.05em; text-decoration:none; }
+    .logo span { font-size:12px; display:block; color:#666; font-weight:normal; letter-spacing:0.1em; }
+    nav ul { display:flex; list-style:none; gap:32px; }
+    nav a { text-decoration:none; color:#333; font-size:14px; letter-spacing:0.05em; transition:color 0.2s; position:relative; }
+    nav a::after { content:""; position:absolute; bottom:-3px; left:0; width:0; height:2px; background:#1a3c6e; transition:width 0.25s ease; }
+    nav a:hover::after, nav a.current::after { width:100%; }
+    nav a:hover, nav a.current { color:#1a3c6e; }
+    .header-lang { display:flex; gap:12px; font-size:13px; }
+    .header-lang a { text-decoration:none; color:#666; border:1px solid #ccc; padding:4px 10px; border-radius:3px; transition:all 0.2s; }
+    .header-lang a:hover, .header-lang a.active { background:#1a3c6e; color:#fff; border-color:#1a3c6e; }
+
+    .page-hero { background:linear-gradient(135deg,#1a3c6e,#2a5298,#3a7bd5,#1a5c8e); background-size:300% 300%; animation:heroBgShift 10s ease infinite; color:#fff; padding:64px 40px; }
+    @keyframes heroBgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .page-hero-inner { max-width:1000px; margin:0 auto; animation:fadeUp 0.7s ease 0.1s both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    .breadcrumb { font-size:12px; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .breadcrumb a { color:rgba(255,255,255,0.65); text-decoration:none; }
+    .breadcrumb span { margin:0 8px; }
+    .page-hero h1 { font-size:32px; font-weight:bold; letter-spacing:0.1em; margin-bottom:8px; }
+    .page-hero p { font-size:13px; color:rgba(255,255,255,0.6); letter-spacing:0.15em; }
+
+    .content { max-width:1000px; margin:0 auto; padding:64px 40px; }
+    .content-section { margin-bottom:80px; opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .content-section.visible { opacity:1; transform:translateY(0); }
+    .content-section h2 { font-size:22px; color:#1a3c6e; padding-bottom:12px; border-bottom:2px solid #1a3c6e; margin-bottom:32px; letter-spacing:0.08em; }
+
+    /* メッセージ */
+    .csr-message { background:#f5f8ff; border-left:4px solid #1a3c6e; padding:28px 32px; border-radius:0 8px 8px 0; font-size:15px; line-height:2; color:#444; margin-bottom:48px; }
+
+    /* CSR取り組みカード */
+    .csr-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+    @media(max-width:768px){ .csr-grid{grid-template-columns:1fr;} }
+    .csr-card { border:1px solid #e5e5e5; border-radius:8px; padding:28px; transition:box-shadow 0.25s,transform 0.25s; }
+    .csr-card:hover { box-shadow:0 6px 24px rgba(26,60,110,0.12); transform:translateY(-3px); }
+    .csr-icon { font-size:40px; margin-bottom:16px; }
+    .csr-card h3 { font-size:17px; color:#1a3c6e; margin-bottom:12px; letter-spacing:0.05em; }
+    .csr-card p { font-size:13px; color:#555; line-height:1.9; }
+    .csr-tag { display:inline-block; font-size:10px; background:#e8effa; color:#1a3c6e; padding:2px 8px; border-radius:3px; margin-bottom:10px; letter-spacing:0.08em; font-weight:bold; }
+
+    /* SDGsバッジ */
+    .sdgs-wrap { display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+    .sdg-badge { width:56px; height:56px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:bold; color:#fff; font-size:11px; text-align:center; }
+
+    footer { background:#1a3c6e; color:rgba(255,255,255,0.7); padding:40px; text-align:center; font-size:13px; }
+    footer .f-logo { font-size:20px; font-weight:bold; color:#fff; margin-bottom:16px; }
+    footer .f-links { display:flex; justify-content:center; gap:24px; margin-bottom:20px; flex-wrap:wrap; }
+    footer .f-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:12px; }
+    footer .f-links a:hover { color:#fff; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">株式会社りくクラス<span>RIKU CLASS</span></a>
+  <nav>
+    <ul>
+      <li><a href="business.html">事業案内</a></li>
+      <li><a href="news.html">ニュース</a></li>
+      <li><a href="ir.html">IR</a></li>
+      <li><a href="csr.html" class="current">CSR</a></li>
+      <li><a href="recruit.html">採用情報</a></li>
+      <li><a href="about.html">企業情報</a></li>
+    </ul>
+  </nav>
+  <div class="header-lang">
+    <a href="#" class="active">JP</a>
+    <a href="#">EN</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">ホーム</a><span>›</span>CSR
+    </div>
+    <h1>CSR・サステナビリティ</h1>
+    <p>CSR / Sustainability</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 基本方針 -->
+  <div class="content-section">
+    <h2>CSR基本方針</h2>
+    <p class="csr-message">
+      りくクラスは「テクノロジーで社会をより良くする」というミッションのもと、デジタル格差の解消と持続可能なビジネス社会の実現に取り組んでいます。中小企業へのDX支援を通じて、すべての企業がテクノロジーの恩恵を受けられる社会の実現に貢献します。
+    </p>
+
+    <div class="csr-grid">
+      <div class="csr-card">
+        <div class="csr-icon">🌱</div>
+        <span class="csr-tag">環境</span>
+        <h3>環境への取り組み</h3>
+        <p>ペーパーレスのフルリモート推進、データセンターのグリーン電力化、クラウドネイティブ開発によるエネルギー効率化を通じてCO₂排出削減に取り組みます。</p>
+      </div>
+      <div class="csr-card">
+        <div class="csr-icon">🤝</div>
+        <span class="csr-tag">社会</span>
+        <h3>社会への貢献</h3>
+        <p>無料DXセミナーの全国開催、中小企業・スタートアップへのIT導入支援補助、IT人材育成プログラムの提供を通じて、デジタル格差のない社会づくりに貢献します。</p>
+      </div>
+      <div class="csr-card">
+        <div class="csr-icon">👥</div>
+        <span class="csr-tag">人材</span>
+        <h3>多様な人材の活躍</h3>
+        <p>女性管理職比率40%以上、育児休業取得率100%（男女共）を目標に掲げ、誰もが働きやすい職場環境の整備に取り組んでいます。リモートワーク制度も積極的に推進しています。</p>
+      </div>
+      <div class="csr-card">
+        <div class="csr-icon">🏛️</div>
+        <span class="csr-tag">ガバナンス</span>
+        <h3>コーポレートガバナンス</h3>
+        <p>独立社外取締役の積極登用、内部統制の強化、コンプライアンス教育の徹底により、透明性・公正性の高い経営体制を構築しています。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SDGs -->
+  <div class="content-section">
+    <h2>SDGsへの取り組み</h2>
+    <p style="font-size:14px;color:#555;line-height:2;margin-bottom:24px;">りくクラスは国連が提唱する「持続可能な開発目標（SDGs）」の達成に向け、事業活動を通じて以下の目標に貢献しています。</p>
+    <div class="sdgs-wrap">
+      <div class="sdg-badge" style="background:#e5243b;">3<br>健康</div>
+      <div class="sdg-badge" style="background:#c5192d;">4<br>教育</div>
+      <div class="sdg-badge" style="background:#ff3a21;">5<br>ジェンダー</div>
+      <div class="sdg-badge" style="background:#26bde2;">8<br>働きがい</div>
+      <div class="sdg-badge" style="background:#a21942;">10<br>不平等</div>
+      <div class="sdg-badge" style="background:#fd9d24;">11<br>まちづくり</div>
+      <div class="sdg-badge" style="background:#3f7e44;">17<br>パートナーシップ</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="f-logo">株式会社りくクラス</div>
+  <div class="f-links">
+    <a href="index.html">トップ</a>
+    <a href="business.html">事業案内</a>
+    <a href="news.html">ニュース</a>
+    <a href="ir.html">IR</a>
+    <a href="csr.html">CSR</a>
+    <a href="recruit.html">採用情報</a>
+    <a href="about.html">企業情報</a>
+  </div>
+  <p>© 2024 Riku Class Co., Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.content-section').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
